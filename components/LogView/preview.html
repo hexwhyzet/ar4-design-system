@@ -1,0 +1,23 @@
+<!-- @dsCard group="Данные" height=240 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>LogView</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(A.LogView, { height: 190, lines: [
+    { t: '18:33:05', level: 'info', text: 'AR4 Console: http://127.0.0.1:8770' },
+    { t: '18:33:06', level: 'ok', text: 'Teensy подключена (COM3, 115200)' },
+    { t: '18:33:06', level: 'tx', text: 'LL A0 B0 C0 D0 E0 F0' },
+    { t: '18:33:12', level: 'warn', text: 'J2: достигнут лимит 90°' },
+    { t: '18:34:40', level: 'error', text: 'Nano: нет ответа 3 с' },
+    { t: '18:34:41', level: 'info', text: 'Конфигурация сохранена в ARconfig.json' }] }));
+</script>
+</body>
+</html>

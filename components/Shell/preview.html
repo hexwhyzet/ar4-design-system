@@ -1,0 +1,20 @@
+<!-- @dsCard group="Каркас" height=300 width=960 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Shell</title>
+<style>
+  body { padding: 16px; padding: 0; }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(A.Shell, { style: { height: 280 },
+    header: h(A.AppHeader, { nav: h(A.NavTabs, { items: [{ id: 'p', label: 'Пульт' }, { id: 'c', label: 'Калибровка' }, { id: 'o', label: 'Оси' }, { id: 'l', label: 'Лог' }] }), statuses: [{ tone: 'ok', label: 'Сервер' }], actions: h(A.EStop) }) },
+    h(A.PageHead, { title: 'Пульт' }),
+    h(A.Panel, { title: 'Панель' }, h('p', null, 'Содержимое страницы.'))));
+</script>
+</body>
+</html>

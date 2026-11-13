@@ -1,0 +1,70 @@
+<!-- @dsCard height=300 -->
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>AR4 Console</title>
+<style>
+  html, body { margin: 0; height: 100%; padding: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); overflow: hidden; }
+  .cover { position: relative; width: 960px; height: 300px; overflow: hidden; }
+  .art { position: absolute; top: 0; left: 480px; width: 480px; height: 300px; overflow: hidden; }
+  .art svg { display: block; width: 480px; height: 300px; }
+  .accent { fill: var(--accent); }
+  .ink { fill: var(--ink); }
+  .ok { fill: var(--ok); }
+  .stop { fill: var(--danger-fill); }
+  .blk { rx: var(--radius-lg); }
+  .sq { rx: var(--radius-md); }
+  .track { fill: var(--track-fill); rx: 3px; }
+  .band { fill: var(--bg); rx: 3px; }
+  .mark { fill: var(--accent); rx: 2px; }
+  .mark.on-accent { fill: var(--on-accent); }
+  .words { position: absolute; left: var(--space-6); bottom: var(--space-6); max-width: 440px; }
+  .name { margin: 0; font: 700 96px/.95 var(--font-sans); letter-spacing: -0.03em; color: var(--ink); }
+  .tag { margin: var(--space-2) 0 0 4px; font: 400 14px/20px var(--font-sans); color: var(--ink-muted); }
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="art" aria-hidden="true">
+    <svg viewBox="0 0 480 300" width="480" height="300">
+      <!--
+        blocks      accent 144×236 slab bled off the top (the robot's signal orange, largest) · ink 320×164 bleeding off the right (the console body) · ok 96×48 and danger-fill 48×48 as the two status lamps — ≈34% of 960×300
+        arrangement one tall accent slab with the ink block beside it and two small lamps under it, bottoms on one line space-6 above the edge, space-4 gutters
+        pattern     jog scales, from "Шкала оси: допустимый диапазон между лимитами и текущее положение": four 6px tracks at a space-6 pitch on the ink block, limit band in track-fill, accent markers; three cut into the slab in on-accent
+        scales      sides in space-4 multiples; gutters space-4; pitch space-6; corners radius-lg (blocks), radius-md (lamps), track rx 3 (half of 6px), marker rx 2
+      -->
+      <rect class="accent blk" x="0" y="-16" width="144" height="284" rx="10"/>
+      <rect class="ink blk" x="160" y="40" width="336" height="164" rx="10"/>
+      <rect class="ok sq" x="160" y="220" width="96" height="48" rx="6"/>
+      <rect class="stop sq" x="272" y="220" width="48" height="48" rx="6"/>
+
+      <rect class="band" x="184" y="69" width="272" height="6" rx="3"/>
+      <rect class="track" x="200" y="69" width="240" height="6" rx="3"/>
+      <rect class="mark" x="300" y="62" width="4" height="20" rx="2"/>
+
+      <rect class="band" x="184" y="101" width="272" height="6" rx="3"/>
+      <rect class="track" x="232" y="101" width="160" height="6" rx="3"/>
+      <rect class="mark" x="244" y="94" width="4" height="20" rx="2"/>
+
+      <rect class="band" x="184" y="133" width="272" height="6" rx="3"/>
+      <rect class="track" x="216" y="133" width="200" height="6" rx="3"/>
+      <rect class="mark" x="372" y="126" width="4" height="20" rx="2"/>
+
+      <rect class="band" x="184" y="165" width="272" height="6" rx="3"/>
+      <rect class="track" x="184" y="165" width="272" height="6" rx="3"/>
+      <rect class="mark" x="316" y="158" width="4" height="20" rx="2"/>
+
+      <rect class="mark on-accent" x="32" y="160" width="4" height="20" rx="2"/>
+      <rect class="mark on-accent" x="64" y="192" width="4" height="20" rx="2"/>
+      <rect class="mark on-accent" x="96" y="224" width="4" height="20" rx="2"/>
+    </svg>
+  </div>
+  <div class="words">
+    <h1 class="name">AR4<br>Console</h1>
+    <p class="tag">Пульт оператора манипулятора: состояние за секунду.</p>
+  </div>
+</div>
+</body>
+</html>

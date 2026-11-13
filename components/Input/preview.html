@@ -1,0 +1,21 @@
+<!-- @dsCard group="Ввод" height=110 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Input</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'ar-row', style: { gap: 16, alignItems: 'flex-end' } },
+    h(A.Input, { label: 'Смещение', suffix: '°', defaultValue: '0', width: 110 }),
+    h(A.Input, { label: 'Мин', suffix: '°', defaultValue: '−42', width: 110, dirty: true }),
+    h(A.Input, { label: 'Макс', suffix: '°', defaultValue: '200', width: 110, invalid: true }),
+    h(A.Input, { label: 'Нет связи', suffix: '°', defaultValue: '0', width: 110, disabled: true })));
+</script>
+</body>
+</html>

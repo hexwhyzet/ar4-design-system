@@ -1,0 +1,20 @@
+<!-- @dsCard group="Ввод" height=170 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Segmented</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'ar-stack', style: { gap: 12 } },
+    h(A.Segmented, { label: 'Шаг', mono: true, defaultValue: 5, options: [{ value: 0.5, label: '0.5°' }, { value: 1, label: '1°' }, { value: 5, label: '5°' }, { value: 10, label: '10°' }, { value: 30, label: '30°' }] }),
+    h(A.Segmented, { label: 'Захват', options: ['Открыть', 'Закрыть'] }),
+    h(A.Segmented, { label: 'Уровень', options: ['Все', 'Предупр.', 'Ошибки'], defaultValue: 'Все' })));
+</script>
+</body>
+</html>

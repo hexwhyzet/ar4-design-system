@@ -1,0 +1,21 @@
+<!-- @dsCard group="Статус" height=310 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Notice</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'ar-stack', style: { gap: 8 } },
+    h(A.Notice, { tone: 'danger', title: 'Teensy не подключена', action: h(A.Button, { variant: 'primary', size: 'sm', icon: 'link' }, 'Подключить') }, 'Движение осей и калибровка недоступны.'),
+    h(A.Notice, { tone: 'warn', title: 'Робот не откалиброван' }, 'Координаты и лимиты не защищают. Запустите автокалибровку.'),
+    h(A.Notice, { tone: 'ok', title: 'Калибровка завершена' }, 'J1–J6 привязаны к концевикам.'),
+    h(A.Notice, { tone: 'info' }, 'Запястье калибруют во второй стадии, когда плечо уже на месте.')));
+</script>
+</body>
+</html>

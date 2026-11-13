@@ -1,0 +1,69 @@
+<!-- @dsCard group="Экраны" height=1100 width=1440 subtitle="Калибровка · стадия 2 идёт, одно смещение изменено" page -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>ScreenCalibration</title>
+<style>
+  body { padding: 16px; padding: 0; }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  var NAV = [{ id: 'pult', label: 'Пульт' }, { id: 'cal', label: 'Калибровка' }, { id: 'axes', label: 'Оси' }, { id: 'log', label: 'Лог' }];
+  function chrome(page, connected, calibrated, body, banner) {
+    var st = connected
+      ? [{ tone: 'ok', label: 'Сервер' }, { tone: 'ok', label: 'Teensy', detail: 'COM3' }, { tone: 'ok', label: 'Nano', detail: 'COM4' }, calibrated ? { tone: 'ok', label: 'Откалиброван' } : { tone: 'warn', label: 'Не откалиброван' }]
+      : [{ tone: 'ok', label: 'Сервер' }, { tone: 'danger', label: 'Teensy', detail: 'нет связи' }, { tone: 'danger', label: 'Nano', detail: 'нет связи' }, { tone: 'warn', label: 'Не откалиброван' }];
+    var items = NAV.map(function (n) { return n.id === 'cal' && !calibrated ? Object.assign({}, n, { warn: 'не откалиброван' }) : n; });
+    return h(A.Shell, { style: { height: '100vh' },
+      header: h(A.AppHeader, { subtitle: 'v1.2', nav: h(A.NavTabs, { items: items, defaultValue: page }), statuses: st, actions: [connected ? h(A.Button, { key: 'c', variant: 'ghost', size: 'sm' }, 'Отключить') : null, h(A.EStop, { key: 'e' })] }),
+      banner: banner || (!connected ? h(A.Notice, { tone: 'danger', bar: true, title: 'Teensy не подключена', action: h(A.Button, { variant: 'primary', size: 'sm', icon: 'link' }, 'Подключить') }, 'Движение осей, захват и калибровка недоступны.') : null) }, body);
+  }
+
+  var AX = [['J1', 12.5, 1, 0, 'ok'], ['J2', -30.2, 1, 0, 'ok'], ['J3', 18, 1, 0, 'ok'], ['J4', null, 2, 0, 'run'], ['J5', null, 2, 1.5, 'idle'], ['J6', null, 2, 0, 'idle']];
+  var DIR = [{ value: 1, label: 'Прямое' }, { value: 0, label: 'Обратное' }];
+  function chip(s) { return s === 'ok' ? h(A.StatusChip, { tone: 'ok', label: 'Готово' }) : s === 'run' ? h(A.StatusChip, { tone: 'warn', label: 'Едет к концевику' }) : h(A.StatusChip, { tone: 'idle', label: 'Ожидает' }); }
+  function Cal() {
+    var rows = AX.map(function (a, i) {
+      return { key: a[0],
+        j: h('b', { className: 'ar-num' }, a[0]),
+        a: a[1] == null ? h('span', { style: { color: 'var(--ink-faint)' } }, '—') : A.format(a[1]) + '°',
+        s: chip(a[4]),
+        st: h(A.Segmented, { label: 'Стадия ' + a[0], hideLabel: true, mono: true, options: [{ value: 1, label: '1' }, { value: 2, label: '2' }], defaultValue: a[2] }),
+        o: h(A.Input, { size: 'sm', suffix: '°', defaultValue: String(a[3]).replace('-', '−'), width: 96, dirty: a[3] !== 0 }),
+        d: h(A.Select, { size: 'sm', options: DIR, defaultValue: i % 2 ? 0 : 1, width: 124 }),
+        l: h(A.Select, { size: 'sm', options: ['HIGH', 'LOW'], width: 92 }),
+        e: h(A.Checkbox, { defaultChecked: true, 'aria-label': 'Энкодер ' + a[0] }),
+        b: h(A.Button, { size: 'sm' }, 'Калибровать') };
+    });
+    return chrome('cal', true, false, [
+      h(A.PageHead, { key: 'h', title: 'Калибровка', subtitle: 'Привязка осей к концевикам' }),
+      h(A.Panel, { key: 'auto', title: 'Автокалибровка', meta: 'Плечо, затем запястье',
+        actions: [h(A.Button, { key: 's', variant: 'ghost', size: 'sm', icon: 'pause' }, 'Прервать'), h(A.Button, { key: 'r', variant: 'primary', size: 'sm', icon: 'play', disabled: true }, 'Запустить')] },
+        h(A.Stages, { stages: [
+          { title: 'Стадия 1 · плечо', joints: 'J1 J2 J3', state: 'done', status: h(A.StatusChip, { tone: 'ok', label: 'Готово' }) },
+          { title: 'Стадия 2 · запястье', joints: 'J4 J5 J6', state: 'active', status: h(A.StatusChip, { tone: 'warn', label: 'Идёт · J4' }) }] }),
+        h('p', null, 'Оси едут к концевикам, затем им присваивается угол концевика плюс смещение. Состав стадий задаётся в таблице ниже.')),
+      h(A.Panel, { key: 'axes', title: 'Оси', meta: 'J1–J6', flush: true,
+        actions: h(A.Checkbox, { label: 'Внешние оси J7–J9' }),
+        footer: h(A.SaveBar, { dirty: 1 }) },
+        h(A.Table, { columns: [
+          { key: 'j', label: 'Ось', width: 56 }, { key: 'a', label: 'Угол', align: 'num', width: 90 }, { key: 's', label: 'Статус' },
+          { key: 'st', label: 'Стадия', hint: 'В какой стадии автокалибровки участвует ось' },
+          { key: 'o', label: 'Смещение', hint: 'Добавляется к углу концевика после касания' },
+          { key: 'd', label: 'Направление', hint: 'Куда ось едет к концевику' },
+          { key: 'l', label: 'Концевик', hint: 'Уровень сигнала при срабатывании' },
+          { key: 'e', label: 'Энкодер', align: 'center' }, { key: 'b', label: '', align: 'end' }], rows: rows })),
+      h(A.Panel, { key: 'force', tone: 'danger', title: 'Наладка: принудительная позиция' },
+        h('p', null, 'Без движения объявляет текущее положение известной позой. Если робот стоит не точно в ней, все координаты будут неверными, а лимиты перестанут защищать. Только для пусконаладки и тестов.'),
+        h('div', { className: 'ar-row' },
+          h(A.Button, { variant: 'danger-outline' }, h('span', null, 'Это Home ', h('span', { className: 'ar-num', style: { fontWeight: 400 } }, '(0, 0, 0, 0, 45, 0)'))),
+          h(A.Button, { variant: 'danger-outline' }, h('span', null, 'Это Rest ', h('span', { className: 'ar-num', style: { fontWeight: 400 } }, '(0, 0, −89, 0, 0, 0)')))))
+    ]);
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(h(Cal));
+</script>
+</body>
+</html>

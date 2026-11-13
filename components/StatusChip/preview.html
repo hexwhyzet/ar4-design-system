@@ -1,0 +1,22 @@
+<!-- @dsCard group="Статус" height=64 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>StatusChip</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'ar-row' },
+    h(A.StatusChip, { tone: 'ok', label: 'Сервер' }),
+    h(A.StatusChip, { tone: 'ok', label: 'Teensy', detail: 'COM3' }),
+    h(A.StatusChip, { tone: 'warn', label: 'Не откалиброван' }),
+    h(A.StatusChip, { tone: 'danger', label: 'Nano', detail: 'нет связи' }),
+    h(A.StatusChip, { tone: 'idle', label: 'J7', detail: 'не используется' })));
+</script>
+</body>
+</html>

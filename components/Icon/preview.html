@@ -1,0 +1,19 @@
+<!-- @dsCard group="Утилиты" height=64 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Icon</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'ar-row', style: { gap: 16, color: 'var(--ink)' } }, ['minus','plus','expand','chevron','play','pause','download','trash','link','home','gripper','stop'].map(function (n) {
+    return h('span', { key: n, title: n, style: { display: 'inline-flex', width: 24, height: 24 } }, h(A.Icon, { name: n }));
+  })));
+</script>
+</body>
+</html>

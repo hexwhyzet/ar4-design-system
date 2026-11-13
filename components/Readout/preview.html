@@ -1,0 +1,19 @@
+<!-- @dsCard group="Оси" height=190 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Readout</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { style: { maxWidth: 560 } }, h(A.Readouts, null,
+    h(A.Readout, { label: 'X', unit: 'мм', value: 312.45 }), h(A.Readout, { label: 'Y', unit: 'мм', value: -58.2 }), h(A.Readout, { label: 'Z', unit: 'мм', value: 405.1 }),
+    h(A.Readout, { label: 'Rz', unit: '°', value: 12.5 }), h(A.Readout, { label: 'Ry', unit: '°', value: 88.3 }), h(A.Readout, { label: 'Rx', unit: '°' }))));
+</script>
+</body>
+</html>

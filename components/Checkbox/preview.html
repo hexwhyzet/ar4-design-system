@@ -1,0 +1,17 @@
+<!-- @dsCard group="Ввод" height=64 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Checkbox</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'ar-row', style: { gap: 24 } }, h(A.Checkbox, { label: 'Энкодер', defaultChecked: true }), h(A.Checkbox, { label: 'Показать внешние оси J7–J9' }), h(A.Checkbox, { label: 'Недоступно', disabled: true })));
+</script>
+</body>
+</html>

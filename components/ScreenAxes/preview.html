@@ -1,0 +1,50 @@
+<!-- @dsCard group="Экраны" height=900 width=1440 subtitle="Оси · лимиты J2 изменены, не сохранены" page -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>ScreenAxes</title>
+<style>
+  body { padding: 16px; padding: 0; }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  var NAV = [{ id: 'pult', label: 'Пульт' }, { id: 'cal', label: 'Калибровка' }, { id: 'axes', label: 'Оси' }, { id: 'log', label: 'Лог' }];
+  function chrome(page, connected, calibrated, body, banner) {
+    var st = connected
+      ? [{ tone: 'ok', label: 'Сервер' }, { tone: 'ok', label: 'Teensy', detail: 'COM3' }, { tone: 'ok', label: 'Nano', detail: 'COM4' }, calibrated ? { tone: 'ok', label: 'Откалиброван' } : { tone: 'warn', label: 'Не откалиброван' }]
+      : [{ tone: 'ok', label: 'Сервер' }, { tone: 'danger', label: 'Teensy', detail: 'нет связи' }, { tone: 'danger', label: 'Nano', detail: 'нет связи' }, { tone: 'warn', label: 'Не откалиброван' }];
+    var items = NAV.map(function (n) { return n.id === 'cal' && !calibrated ? Object.assign({}, n, { warn: 'не откалиброван' }) : n; });
+    return h(A.Shell, { style: { height: '100vh' },
+      header: h(A.AppHeader, { subtitle: 'v1.2', nav: h(A.NavTabs, { items: items, defaultValue: page }), statuses: st, actions: [connected ? h(A.Button, { key: 'c', variant: 'ghost', size: 'sm' }, 'Отключить') : null, h(A.EStop, { key: 'e' })] }),
+      banner: banner || (!connected ? h(A.Notice, { tone: 'danger', bar: true, title: 'Teensy не подключена', action: h(A.Button, { variant: 'primary', size: 'sm', icon: 'link' }, 'Подключить') }, 'Движение осей, захват и калибровка недоступны.') : null) }, body);
+  }
+
+  var L = [['J1', 12.5, -170, 170], ['J2', -30.2, -42, 90], ['J3', 18, -89, 52], ['J4', 0, -180, 180], ['J5', 45, -105, 105], ['J6', -88.4, -180, 180]];
+  function Axes() {
+    var rows = L.map(function (a) {
+      var dirty = a[0] === 'J2';
+      var lo = dirty ? -40 : a[2];
+      return { key: a[0],
+        j: h('b', { className: 'ar-num' }, a[0]),
+        now: A.format(a[1]) + '°',
+        mn: h(A.Input, { size: 'sm', suffix: '°', defaultValue: A.format(lo, 0), width: 96, dirty: dirty }),
+        mx: h(A.Input, { size: 'sm', suffix: '°', defaultValue: A.format(a[3], 0), width: 96 }),
+        r: h(A.RangeBar, { min: lo, max: a[3], value: a[1], domain: [-180, 180] }) };
+    });
+    return chrome('axes', true, true, [
+      h(A.PageHead, { key: 'h', title: 'Оси', subtitle: 'Программные лимиты движения' }),
+      h(A.Panel, { key: 'lim', title: 'Лимиты осей', meta: 'градусы', flush: true, footer: h(A.SaveBar, { dirty: 1, note: 'после сохранения уходят в Teensy' }) },
+        h('div', { style: { padding: '12px 16px 4px' } }, h('p', null, 'Jog и программы не выводят ось за лимиты. Лимит шире механики — ось упрётся в упор.')),
+        h(A.Table, { columns: [
+          { key: 'j', label: 'Ось', width: 56 }, { key: 'now', label: 'Сейчас', align: 'num', width: 100 },
+          { key: 'mn', label: 'Мин', width: 120 }, { key: 'mx', label: 'Макс', width: 120 },
+          { key: 'r', label: 'Диапазон на шкале −180…180°' }], rows: rows }))
+    ]);
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(h(Axes));
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!-- @dsCard group="Ввод" height=90 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Select</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'ar-row', style: { gap: 16, alignItems: 'flex-end' } },
+    h(A.Select, { label: 'Направление', options: [{ value: 1, label: 'Прямое' }, { value: 0, label: 'Обратное' }], width: 140 }),
+    h(A.Select, { label: 'Концевик', options: ['HIGH', 'LOW'], width: 110 }),
+    h(A.Select, { label: 'Порт', options: ['COM3 · Teensy 4.1', 'COM4 · Nano'], width: 200 })));
+</script>
+</body>
+</html>

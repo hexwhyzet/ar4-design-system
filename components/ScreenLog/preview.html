@@ -1,0 +1,46 @@
+<!-- @dsCard group="Экраны" height=900 width=1440 subtitle="Лог · Teensy не подключена" page -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>ScreenLog</title>
+<style>
+  body { padding: 16px; padding: 0; }
+  .logpanel { flex: 1; min-height: 0; } .logpanel .ar-panel__body { min-height: 0; } .logpanel .ar-log { flex: 1; border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  var NAV = [{ id: 'pult', label: 'Пульт' }, { id: 'cal', label: 'Калибровка' }, { id: 'axes', label: 'Оси' }, { id: 'log', label: 'Лог' }];
+  function chrome(page, connected, calibrated, body, banner) {
+    var st = connected
+      ? [{ tone: 'ok', label: 'Сервер' }, { tone: 'ok', label: 'Teensy', detail: 'COM3' }, { tone: 'ok', label: 'Nano', detail: 'COM4' }, calibrated ? { tone: 'ok', label: 'Откалиброван' } : { tone: 'warn', label: 'Не откалиброван' }]
+      : [{ tone: 'ok', label: 'Сервер' }, { tone: 'danger', label: 'Teensy', detail: 'нет связи' }, { tone: 'danger', label: 'Nano', detail: 'нет связи' }, { tone: 'warn', label: 'Не откалиброван' }];
+    var items = NAV.map(function (n) { return n.id === 'cal' && !calibrated ? Object.assign({}, n, { warn: 'не откалиброван' }) : n; });
+    return h(A.Shell, { style: { height: '100vh' },
+      header: h(A.AppHeader, { subtitle: 'v1.2', nav: h(A.NavTabs, { items: items, defaultValue: page }), statuses: st, actions: [connected ? h(A.Button, { key: 'c', variant: 'ghost', size: 'sm' }, 'Отключить') : null, h(A.EStop, { key: 'e' })] }),
+      banner: banner || (!connected ? h(A.Notice, { tone: 'danger', bar: true, title: 'Teensy не подключена', action: h(A.Button, { variant: 'primary', size: 'sm', icon: 'link' }, 'Подключить') }, 'Движение осей, захват и калибровка недоступны.') : null) }, body);
+  }
+
+  var LINES = [
+    { t: '18:33:05', level: 'info', text: 'AR4 Console: http://127.0.0.1:8770' },
+    { t: '18:33:05', level: 'info', text: 'Конфигурация загружена из ARconfig.json' },
+    { t: '18:33:06', level: 'error', text: 'Teensy: порт COM3 не найден' },
+    { t: '18:33:06', level: 'error', text: 'Nano: порт COM4 не найден' },
+    { t: '18:33:06', level: 'warn', text: 'Калибровка не выполнена — лимиты не защищают' },
+    { t: '18:35:41', level: 'info', text: 'Поиск устройств… найдено портов: 0' }];
+  function Log() {
+    return chrome('log', false, false, [
+      h(A.PageHead, { key: 'h', title: 'Лог', subtitle: 'Сервер и обмен с контроллерами' }),
+      h(A.Panel, { key: 'l', className: 'logpanel', title: 'События', meta: LINES.length + ' строк', flush: true,
+        actions: [h(A.Segmented, { key: 'f', label: 'Уровень', hideLabel: true, options: ['Все', 'Предупр.', 'Ошибки', 'Обмен'], defaultValue: 'Все' }),
+          h(A.Button, { key: 'p', size: 'sm', variant: 'ghost', icon: 'pause' }, 'Пауза'),
+          h(A.Button, { key: 'd', size: 'sm', variant: 'ghost', icon: 'download' }, 'Скачать'),
+          h(A.Button, { key: 'c', size: 'sm', variant: 'ghost', icon: 'trash' }, 'Очистить')] },
+        h(A.LogView, { lines: LINES }))
+    ]);
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(h(Log));
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!-- @dsCard group="Данные" height=210 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Table</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(A.Panel, { flush: true }, h(A.Table, {
+    columns: [{ key: 'j', label: 'Ось' }, { key: 'a', label: 'Угол', align: 'num' }, { key: 's', label: 'Статус' }, { key: 'o', label: 'Смещение', hint: 'Добавляется к углу концевика' }, { key: 'e', label: 'Энкодер', align: 'center' }],
+    rows: [
+      { j: h('b', { className: 'ar-num' }, 'J1'), a: '12.50°', s: h(A.StatusChip, { tone: 'ok', label: 'Готово' }), o: h(A.Input, { size: 'sm', suffix: '°', defaultValue: '0', width: 90 }), e: h(A.Checkbox, { defaultChecked: true, 'aria-label': 'Энкодер J1' }) },
+      { j: h('b', { className: 'ar-num' }, 'J2'), a: '—', s: h(A.StatusChip, { tone: 'idle', label: 'Нет' }), o: h(A.Input, { size: 'sm', suffix: '°', defaultValue: '1.5', width: 90, dirty: true }), e: h(A.Checkbox, { defaultChecked: true, 'aria-label': 'Энкодер J2' }) }] })));
+</script>
+</body>
+</html>

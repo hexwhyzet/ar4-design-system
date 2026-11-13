@@ -1,0 +1,19 @@
+<!-- @dsCard group="Ввод" height=150 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Button</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'ar-stack', style: { gap: 12 } },
+    h('div', { className: 'ar-row' }, h(A.Button, { variant: 'primary', icon: 'play' }, 'Запустить автокалибровку'), h(A.Button, null, 'Калибровать'), h(A.Button, { variant: 'ghost' }, 'Отменить'), h(A.Button, { variant: 'danger-outline' }, 'Это Home'), h(A.Button, { disabled: true }, 'Недоступно')),
+    h('div', { className: 'ar-row' }, h(A.Button, { size: 'sm' }, 'Маленькая'), h(A.Button, { size: 'lg', iconOnly: true, icon: 'minus', 'aria-label': 'минус' }), h(A.Button, { size: 'lg', iconOnly: true, icon: 'plus', 'aria-label': 'плюс' }), h(A.Button, { variant: 'secondary', icon: 'expand' }, 'На весь экран'))));
+</script>
+</body>
+</html>

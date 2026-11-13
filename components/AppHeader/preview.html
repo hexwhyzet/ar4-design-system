@@ -1,0 +1,26 @@
+<!-- @dsCard group="Каркас" height=210 width=1360 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>AppHeader</title>
+<style>
+  body { padding: 16px; padding: 16px 0; }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'ar-stack' },
+    h(A.AppHeader, { subtitle: 'v1.2', nav: h(A.NavTabs, { items: [{ id: 'p', label: 'Пульт' }, { id: 'c', label: 'Калибровка' }, { id: 'o', label: 'Оси' }, { id: 'l', label: 'Лог' }] }), statuses: [
+      { tone: 'ok', label: 'Сервер' }, { tone: 'ok', label: 'Teensy', detail: 'COM3' },
+      { tone: 'ok', label: 'Nano', detail: 'COM4' }, { tone: 'ok', label: 'Откалиброван' }],
+      actions: [h(A.Button, { key: 'd', variant: 'ghost', size: 'sm' }, 'Отключить'), h(A.EStop, { key: 's' })] }),
+    h(A.AppHeader, { subtitle: 'v1.2', nav: h(A.NavTabs, { defaultValue: 'c', items: [{ id: 'p', label: 'Пульт' }, { id: 'c', label: 'Калибровка', warn: true }, { id: 'o', label: 'Оси' }, { id: 'l', label: 'Лог' }] }), statuses: [
+      { tone: 'ok', label: 'Сервер' }, { tone: 'danger', label: 'Teensy', detail: 'нет связи' },
+      { tone: 'danger', label: 'Nano', detail: 'нет связи' }, { tone: 'warn', label: 'Не откалиброван' }],
+      actions: h(A.EStop) }),
+    h(A.Notice, { tone: 'danger', bar: true, title: 'Teensy не подключена', action: h(A.Button, { variant: 'primary', size: 'sm', icon: 'link' }, 'Подключить') }, 'Движение осей, захват и калибровка недоступны.')));
+</script>
+</body>
+</html>

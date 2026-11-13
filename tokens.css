@@ -1,0 +1,74 @@
+/* AR4 Console — generated from tokens.json */
+:root, [data-theme="dark"] {
+  --bg: #0d0f12;
+  --surface: #14171c;
+  --surface-raised: #1b1f26;
+  --surface-sunken: #0a0c0e;
+  --video: #050607;
+  --line: #252a32;
+  --line-control: #646e7d;
+  --ink: #e9ecf0;
+  --ink-muted: #a4acb8;
+  --ink-faint: #848d9b;
+  --accent: #ff9d42;
+  --accent-hover: #ffb26b;
+  --accent-soft: #3a2914;
+  --on-accent: #1c1206;
+  --ok: #5cb9f2;
+  --ok-soft: #11273a;
+  --warn: #ecd34e;
+  --warn-soft: #2e2a10;
+  --danger: #ff6259;
+  --danger-soft: #3a1614;
+  --danger-fill: #d63a32;
+  --on-danger: #ffffff;
+  --focus: var(--accent);
+  --track: #2a3039;
+  --track-fill: #7a8494;
+  --shadow-overlay: 0 6px 20px rgba(0,0,0,0.55);
+}
+[data-theme="light"] {
+  --bg: #eceef1;
+  --surface: #ffffff;
+  --surface-raised: #f4f5f7;
+  --surface-sunken: #e6e9ed;
+  --video: #0b0d10;
+  --line: #dde1e6;
+  --line-control: #808894;
+  --ink: #14171c;
+  --ink-muted: #4a525e;
+  --ink-faint: #67707d;
+  --accent: #a24e00;
+  --accent-hover: #8f4600;
+  --accent-soft: #fcebd9;
+  --on-accent: #ffffff;
+  --ok: #0b6aa3;
+  --ok-soft: #dcecf8;
+  --warn: #7d6200;
+  --warn-soft: #f6efcf;
+  --danger: #c0261c;
+  --danger-soft: #fbe1df;
+  --danger-fill: #c0261c;
+  --on-danger: #ffffff;
+  --focus: var(--accent);
+  --track: #dde1e6;
+  --track-fill: #6f7884;
+  --shadow-overlay: 0 6px 20px rgba(20,23,28,0.18);
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --control-sm: 28px;
+  --control-md: 36px;
+  --control-lg: 48px;
+  --header-h: 56px;
+  --font-sans: "Golos Text", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}

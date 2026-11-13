@@ -1,0 +1,17 @@
+<!-- @dsCard group="Каркас" height=72 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>EStop</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'ar-row' }, h(A.EStop), h(A.EStop, { engaged: true }), h(A.EStop, { size: 'lg' })));
+</script>
+</body>
+</html>

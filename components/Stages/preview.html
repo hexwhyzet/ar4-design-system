@@ -1,0 +1,19 @@
+<!-- @dsCard group="Оси" height=90 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Stages</title>
+<style>
+  body { padding: 16px;  }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(A.Stages, { stages: [
+    { title: 'Стадия 1 · плечо', joints: 'J1 J2 J3', state: 'done', status: h(A.StatusChip, { tone: 'ok', label: 'Готово' }) },
+    { title: 'Стадия 2 · запястье', joints: 'J4 J5 J6', state: 'active', status: h(A.StatusChip, { tone: 'warn', label: 'Идёт' }) }] }));
+</script>
+</body>
+</html>

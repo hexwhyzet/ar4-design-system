@@ -1,0 +1,53 @@
+<!-- @dsCard group="Экраны" height=900 width=1440 subtitle="Пульт · Teensy подключена, робот откалиброван" page -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>ScreenPult</title>
+<style>
+  body { padding: 16px; padding: 0; }
+  .pult { display: grid; grid-template-columns: minmax(0, 1fr) 560px; gap: var(--space-4); align-items: start; }
+  .col { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .ctrl { display: grid; grid-template-columns: auto 1fr; gap: var(--space-3) var(--space-4); align-items: center; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var A = window.AR4, h = React.createElement, useState = React.useState;
+  var NAV = [{ id: 'pult', label: 'Пульт' }, { id: 'cal', label: 'Калибровка' }, { id: 'axes', label: 'Оси' }, { id: 'log', label: 'Лог' }];
+  function chrome(page, connected, calibrated, body, banner) {
+    var st = connected
+      ? [{ tone: 'ok', label: 'Сервер' }, { tone: 'ok', label: 'Teensy', detail: 'COM3' }, { tone: 'ok', label: 'Nano', detail: 'COM4' }, calibrated ? { tone: 'ok', label: 'Откалиброван' } : { tone: 'warn', label: 'Не откалиброван' }]
+      : [{ tone: 'ok', label: 'Сервер' }, { tone: 'danger', label: 'Teensy', detail: 'нет связи' }, { tone: 'danger', label: 'Nano', detail: 'нет связи' }, { tone: 'warn', label: 'Не откалиброван' }];
+    var items = NAV.map(function (n) { return n.id === 'cal' && !calibrated ? Object.assign({}, n, { warn: 'не откалиброван' }) : n; });
+    return h(A.Shell, { style: { height: '100vh' },
+      header: h(A.AppHeader, { subtitle: 'v1.2', nav: h(A.NavTabs, { items: items, defaultValue: page }), statuses: st, actions: [connected ? h(A.Button, { key: 'c', variant: 'ghost', size: 'sm' }, 'Отключить') : null, h(A.EStop, { key: 'e' })] }),
+      banner: banner || (!connected ? h(A.Notice, { tone: 'danger', bar: true, title: 'Teensy не подключена', action: h(A.Button, { variant: 'primary', size: 'sm', icon: 'link' }, 'Подключить') }, 'Движение осей, захват и калибровка недоступны.') : null) }, body);
+  }
+
+  var J = [['J1', 12.5, -170, 170], ['J2', -30.2, -42, 90], ['J3', 18, -89, 52], ['J4', 0, -180, 180], ['J5', 45, -105, 105], ['J6', -88.4, -180, 180]];
+  function Pult() {
+    var s = useState(5), step = s[0];
+    var v = useState(J.map(function (j) { return j[1]; })), vals = v[0];
+    function jog(i, d) { var n = vals.slice(); n[i] = Math.max(J[i][2], Math.min(J[i][3], n[i] + d * step)); v[1](n); }
+    return chrome('pult', true, true, h('div', { className: 'pult' },
+      h('div', { className: 'col' },
+        h(A.Panel, { title: 'Камера', meta: '1280×720 · 30 fps' }, h(A.CameraView, { defaultCamera: 0 })),
+        h(A.Panel, { title: 'Захват', meta: 'Nano · сервопривод' },
+          h('div', { className: 'ctrl' },
+            h(A.Segmented, { label: 'Захват', hideLabel: true, options: ['Открыть', 'Закрыть'], defaultValue: 'Открыть' }),
+            h(A.Slider, { label: 'Раскрытие', labelWidth: 84, unit: 'мм', min: 0, max: 40, defaultValue: 32 })))),
+      h(A.Panel, { title: 'Позиция и управление', actions: h(A.Button, { size: 'sm', icon: 'home' }, 'В Home') },
+        h('div', null, J.map(function (j, i) { return h(A.JointRow, { key: j[0], joint: j[0], value: vals[i], min: j[2], max: j[3], step: step, onStep: function (d) { jog(i, d); } }); })),
+        h(A.Readouts, null,
+          h(A.Readout, { label: 'X', unit: 'мм', value: 312.45 }), h(A.Readout, { label: 'Y', unit: 'мм', value: 58.2 }), h(A.Readout, { label: 'Z', unit: 'мм', value: 405.1 }),
+          h(A.Readout, { label: 'Rz', unit: '°', value: 12.5 }), h(A.Readout, { label: 'Ry', unit: '°', value: 88.3 }), h(A.Readout, { label: 'Rx', unit: '°', value: -2.1 })),
+        h('div', { className: 'ctrl' },
+          h('span', { className: 'ar-label' }, 'Шаг'),
+          h(A.Segmented, { label: 'Шаг', hideLabel: true, mono: true, value: step, onChange: s[1], options: [{ value: 0.5, label: '0.5°' }, { value: 1, label: '1°' }, { value: 5, label: '5°' }, { value: 10, label: '10°' }, { value: 30, label: '30°' }] }),
+          h('span', { className: 'ar-label' }, 'Скорость'),
+          h(A.Slider, { ariaLabel: 'Скорость', unit: '%', defaultValue: 25 })))));
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(h(Pult));
+</script>
+</body>
+</html>
